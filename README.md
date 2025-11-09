@@ -70,7 +70,7 @@
   </form>
 
   <script>
-    const baseURL = "https://script.google.com/macros/s/YOUR_DEPLOY_URL/exec"; // แก้เป็น URL ของคุณ
+    const baseURL = "https://script.google.com/macros/s/AKfycbyTdOwQ6NEmgUM61CqLWzxIlI6TLJsK1M7ARxP2XX9cEsb4-gPgiDw_O2zBwM9FXJ-P/exec"; // แก้เป็น URL ของคุณ
 
     const form = document.getElementById("recordForm");
     const infoBox = document.getElementById("infoBox");
