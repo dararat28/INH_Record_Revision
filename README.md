@@ -1,20 +1,20 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
-  <meta charset="UTF-8">
-  <title>Drawing Submission Smart Form</title>
-  <style>
-    body { font-family:sans-serif; max-width:650px; margin:auto; padding:25px; background:#f4f6fb; }
-    h2 { text-align:center; }
-    label { display:block; margin-top:10px; font-weight:bold; }
-    input, select, textarea { width:100%; padding:8px; border:1px solid #ccc; border-radius:5px; margin-top:5px; }
-    textarea { height:100px; resize:vertical; }
-    button { margin-top:15px; width:100%; padding:10px; border:none; border-radius:5px; font-size:16px; color:white; }
-    #checkBtn { background:#28a745; }
-    #saveBtn { background:#007bff; }
-    #replaceBtn { background:#dc3545; }
-    .info { background:#e9f1ff; border:1px solid #bcd3ff; padding:10px; border-radius:6px; margin-top:10px; }
-  </style>
+<meta charset="UTF-8">
+<title>Drawing Submission Smart Form</title>
+<style>
+body { font-family:sans-serif; max-width:650px; margin:auto; padding:25px; background:#f4f6fb; }
+h2 { text-align:center; }
+label { display:block; margin-top:10px; font-weight:bold; }
+input, select, textarea { width:100%; padding:8px; border:1px solid #ccc; border-radius:5px; margin-top:5px; }
+textarea { height:100px; resize:vertical; }
+button { margin-top:15px; width:100%; padding:10px; border:none; border-radius:5px; font-size:16px; color:white; }
+#checkBtn { background:#28a745; }
+#saveBtn { background:#007bff; }
+#replaceBtn { background:#dc3545; }
+.info { background:#e9f1ff; border:1px solid #bcd3ff; padding:10px; border-radius:6px; margin-top:10px; }
+</style>
 </head>
 <body>
 <h2>Drawing Submission Smart Form</h2>
@@ -29,9 +29,9 @@
   <label>สถานะการส่ง</label>
   <select name="Status" id="Status" required>
     <option value="">-- เลือกสถานะ --</option>
-    <option value="แนบเอกสารซ้ำ">แนบเอกสารซ้ำ (Rev เพิ่ม / R. เดิม)</option>
-    <option value="แก้ไขเพิ่ม">แก้ไขเพิ่ม (Rev + R. เพิ่ม)</option>
-    <option value="แผ่นใหม่">แผ่นใหม่ (เริ่ม Rev และ R. ใหม่)</option>
+    <option value="แผ่นใหม่">แผ่นใหม่</option>
+    <option value="แก้ไขเพิ่ม">แก้ไขเพิ่ม</option>
+    <option value="แนบเอกสารซ้ำ">แนบเอกสารซ้ำ</option>
   </select>
 
   <label>นำเข้าครั้งแรก?</label>
@@ -52,7 +52,7 @@
 </form>
 
 <script>
-const baseURL = "https://script.google.com/macros/s/AKfycbw_LQejBMYTNvLSap68jvUya8zxQ0qMpEKNsI2H9DPjULBaAsDUR3IzO_lV0dI17uz8/exec"; // เปลี่ยนเป็น URL ของคุณ
+const baseURL = "https://script.google.com/macros/s/AKfycbwErS8iDOHBGpnVnbZGwtbE9rgk443-vBxTAV0zgKOmFxYCGtEIu_Hl5mtZwzSusakf/exec"; // ใส่ URL Web App ของคุณ
 
 const form = document.getElementById("recordForm");
 const infoBox = document.getElementById("infoBox");
@@ -74,7 +74,9 @@ checkBtn.addEventListener("click", async () => {
       const res = await fetch(`${baseURL}?action=get&DrawingNo=${encodeURIComponent(drawingNo)}`);
       const data = await res.json();
       results.push(`<li><b>${drawingNo}</b> → Rev: ${data.Rev || "-"}, R: ${data.R || "-"}</li>`);
-    } catch { results.push(`<li><b>${drawingNo}</b> → ❌ ไม่พบข้อมูล</li>`); }
+    } catch {
+      results.push(`<li><b>${drawingNo}</b> → ❌ ไม่พบข้อมูล</li>`);
+    }
   }
   resultList.innerHTML = results.join("");
 });
@@ -86,6 +88,7 @@ saveBtn.addEventListener("click", async () => {
   const status = form.Status.value;
   const firstEntry = form.FirstEntry.value;
   if (!drawingText || !dateSent || !status || !firstEntry) return alert("กรุณากรอกข้อมูลให้ครบ");
+
   const drawings = drawingText.split(/\n+/).map(d=>d.trim()).filter(d=>d);
 
   for(const drawingNo of drawings){
