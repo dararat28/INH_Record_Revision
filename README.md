@@ -51,7 +51,7 @@ button { margin-top:15px; width:100%; padding:10px; border:none; border-radius:5
 </form>
 
 <script>
-const baseURL = "https://script.google.com/macros/s/AKfycbzEEhySN_7kWXnLJdG17OVAOk4oVsdHbKTY3MJ8CCnmf3FhZRH6km18Jty9UF9ULRyh/exec";
+const baseURL = "https://script.google.com/macros/s/AKfycbxVgXfnKEBn3uNQ6DElW7nB2ESo6SoeGTkarVFz2UvQ0TsRyVPwrO7lyB-yaeMAM6y6/exec";
 
 const form = document.getElementById("recordForm");
 const infoBox = document.getElementById("infoBox");
