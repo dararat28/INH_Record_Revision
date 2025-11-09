@@ -63,7 +63,7 @@
   </form>
 
   <script>
-    const baseURL = "https://script.google.com/macros/s/AKfycbziEqtyAi1DvqyWXGcceIvfIudJI9KSZEHszBk8K1aHpTj_dXaVi85XDIwXvQKLk30/exec"; // ใส่ URL ของ Apps Script ที่ deploy
+    const baseURL = "https://script.google.com/macros/s/AKfycbxrC8IXkErWyrs1udBGk5ogYvYPBAsSxCclv2EfBdwynMw6Rhp8GQj0MsPO8-46e3lB/exec"; // ใส่ URL ของ Apps Script ที่ deploy
 
     const form = document.getElementById("recordForm");
     const infoBox = document.getElementById("infoBox");
