@@ -44,6 +44,21 @@
     <label>Drawing Number (หลายบรรทัดได้)</label>
     <textarea id="DrawingNo" name="DrawingNo" placeholder="เช่น AC-001&#10;AC-001R&#10;AC-002" required></textarea>
 
+    <label>สถานะการส่ง</label>
+    <select name="Status" id="Status" required>
+      <option value="">-- เลือกสถานะ --</option>
+      <option value="แนบเอกสารซ้ำ">แนบเอกสารซ้ำ (Rev เพิ่ม / R. เดิม)</option>
+      <option value="แก้ไขเพิ่ม">แก้ไขเพิ่ม (Rev + R. เพิ่ม)</option>
+      <option value="แผ่นใหม่">แผ่นใหม่ (เริ่ม Rev และ R. ใหม่)</option>
+    </select>
+
+    <label>นำเข้าข้อมูลครั้งแรก?</label>
+    <select name="FirstEntry" id="FirstEntry" required>
+      <option value="">-- เลือก --</option>
+      <option value="yes">ใช่ (เริ่ม Rev/R = 00)</option>
+      <option value="no">ไม่ใช่</option>
+    </select>
+
     <button type="button" id="checkBtn">ตรวจสอบข้อมูล</button>
     <button type="button" id="saveBtn">บันทึกข้อมูลใหม่</button>
     <button type="submit" id="replaceBtn">แทนที่ข้อมูลเดิม</button>
@@ -52,18 +67,10 @@
       <p><b>ผลการตรวจสอบ:</b></p>
       <ul id="resultList"></ul>
     </div>
-
-    <label>สถานะการส่ง</label>
-    <select name="Status" id="Status" required>
-      <option value="">-- เลือกสถานะ --</option>
-      <option value="แนบเอกสารซ้ำ">แนบเอกสารซ้ำ (Rev เพิ่ม / R. เดิม)</option>
-      <option value="แก้ไขเพิ่ม">แก้ไขเพิ่ม (Rev + R. เพิ่ม)</option>
-      <option value="แผ่นใหม่">แผ่นใหม่ (เริ่ม Rev และ R. ใหม่)</option>
-    </select>
   </form>
 
   <script>
-    const baseURL = "https://script.google.com/macros/s/AKfycby9T9fAy4fT-7vNdZJGp8bTN7jYJCSrAV588M8DbD1m3atDdoeI_pSxSxuAxuvhVAyf/exec"; // ใส่ URL ของ Apps Script ที่ deploy
+    const baseURL = "https://script.google.com/macros/s/YOUR_DEPLOY_URL/exec"; // แก้เป็น URL ของคุณ
 
     const form = document.getElementById("recordForm");
     const infoBox = document.getElementById("infoBox");
@@ -100,7 +107,9 @@
       const drawingText = document.getElementById("DrawingNo").value.trim();
       const dateSent = form.DateSent.value;
       const status = form.Status.value;
-      if (!drawingText || !dateSent || !status) return alert("กรุณากรอกข้อมูลให้ครบ");
+      const firstEntry = document.getElementById("FirstEntry").value;
+
+      if (!drawingText || !dateSent || !status || !firstEntry) return alert("กรุณากรอกข้อมูลให้ครบ");
 
       const drawings = drawingText.split(/\n+/).map(d => d.trim()).filter(d => d);
 
@@ -110,6 +119,7 @@
         formData.append("DrawingNo", drawingNo);
         formData.append("DateSent", dateSent);
         formData.append("Status", status);
+        formData.append("FirstEntry", firstEntry);
 
         await fetch(baseURL, { method:"POST", body: formData }).catch(err => console.error(err));
       }
@@ -124,7 +134,9 @@
       const drawingText = document.getElementById("DrawingNo").value.trim();
       const dateSent = form.DateSent.value;
       const status = form.Status.value;
-      if (!drawingText || !dateSent || !status) return alert("กรุณากรอกข้อมูลให้ครบ");
+      const firstEntry = document.getElementById("FirstEntry").value;
+
+      if (!drawingText || !dateSent || !status || !firstEntry) return alert("กรุณากรอกข้อมูลให้ครบ");
 
       const drawings = drawingText.split(/\n+/).map(d => d.trim()).filter(d => d);
 
@@ -134,6 +146,7 @@
         formData.append("DrawingNo", drawingNo);
         formData.append("DateSent", dateSent);
         formData.append("Status", status);
+        formData.append("FirstEntry", firstEntry);
 
         await fetch(baseURL, { method:"POST", body: formData }).catch(err => console.error(err));
       }
