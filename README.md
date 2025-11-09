@@ -18,7 +18,6 @@ button { margin-top:15px; width:100%; padding:10px; border:none; border-radius:5
 </head>
 <body>
 <h2>Drawing Submission Smart Form</h2>
-
 <form id="recordForm">
   <label>วันที่ส่ง</label>
   <input type="date" name="DateSent" required>
@@ -37,7 +36,7 @@ button { margin-top:15px; width:100%; padding:10px; border:none; border-radius:5
   <label>นำเข้าครั้งแรก?</label>
   <select name="FirstEntry" id="FirstEntry" required>
     <option value="">-- เลือก --</option>
-    <option value="yes">ใช่ (เริ่ม Rev/R = 00)</option>
+    <option value="yes">ใช่</option>
     <option value="no">ไม่ใช่</option>
   </select>
 
@@ -52,7 +51,7 @@ button { margin-top:15px; width:100%; padding:10px; border:none; border-radius:5
 </form>
 
 <script>
-const baseURL = "https://script.google.com/macros/s/AKfycbwprxqq9JqmujCoeh7KVf6C8eGyF9fpaF2N2kdfFiR8mMXkCaruiu7LDZHMJzGqMUA/exec"; // ใส่ URL Web App ของคุณ
+const baseURL = "https://script.google.com/macros/s/AKfycbwCLJvnUx_6a9wS73QpyvVsxfX9Tb1RdP7R_tGcKowo6XJEA1Mp6-g4XayaRa0ratni/exec";
 
 const form = document.getElementById("recordForm");
 const infoBox = document.getElementById("infoBox");
@@ -60,17 +59,16 @@ const resultList = document.getElementById("resultList");
 const checkBtn = document.getElementById("checkBtn");
 const saveBtn = document.getElementById("saveBtn");
 
-// ตรวจสอบ Drawing
 checkBtn.addEventListener("click", async () => {
   const drawingText = document.getElementById("DrawingNo").value.trim();
-  if (!drawingText) return alert("กรุณากรอก Drawing Number");
+  if(!drawingText) return alert("กรุณากรอก Drawing Number");
   const drawings = drawingText.split(/\n+/).map(d=>d.trim()).filter(d=>d);
   resultList.innerHTML = "<li>⏳ กำลังตรวจสอบ...</li>";
   infoBox.style.display = "block";
 
   const results = [];
   for(const drawingNo of drawings){
-    try {
+    try{
       const res = await fetch(`${baseURL}?action=get&DrawingNo=${encodeURIComponent(drawingNo)}`);
       const data = await res.json();
       results.push(`<li><b>${drawingNo}</b> → Rev: ${data.Rev || "-"}, R: ${data.R || "-"}</li>`);
@@ -81,55 +79,49 @@ checkBtn.addEventListener("click", async () => {
   resultList.innerHTML = results.join("");
 });
 
-// บันทึกข้อมูลใหม่
 saveBtn.addEventListener("click", async () => {
   const drawingText = document.getElementById("DrawingNo").value.trim();
   const dateSent = form.DateSent.value;
   const status = form.Status.value;
   const firstEntry = form.FirstEntry.value;
-  if (!drawingText || !dateSent || !status || !firstEntry) return alert("กรุณากรอกข้อมูลให้ครบ");
+  if(!drawingText || !dateSent || !status || !firstEntry) return alert("กรุณากรอกข้อมูลให้ครบ");
 
   const drawings = drawingText.split(/\n+/).map(d=>d.trim()).filter(d=>d);
 
   for(const drawingNo of drawings){
     const formData = new FormData();
-    formData.append("action", "insertOrUpdate");
-    formData.append("DrawingNo", drawingNo);
-    formData.append("DateSent", dateSent);
-    formData.append("Status", status);
-    formData.append("FirstEntry", firstEntry);
-
-    await fetch(baseURL, { method:"POST", body: formData }).catch(err=>console.error(err));
+    formData.append("action","insertOrUpdate");
+    formData.append("DrawingNo",drawingNo);
+    formData.append("DateSent",dateSent);
+    formData.append("Status",status);
+    formData.append("FirstEntry",firstEntry);
+    await fetch(baseURL,{method:"POST",body:formData}).catch(err=>console.error(err));
   }
   alert("บันทึกข้อมูลใหม่เสร็จเรียบร้อย");
-  form.reset();
-  infoBox.style.display = "none";
+  form.reset(); infoBox.style.display="none";
 });
 
-// แทนที่ข้อมูลเดิม
-form.addEventListener("submit", async e => {
+form.addEventListener("submit", async e=>{
   e.preventDefault();
   const drawingText = document.getElementById("DrawingNo").value.trim();
   const dateSent = form.DateSent.value;
   const status = form.Status.value;
   const firstEntry = form.FirstEntry.value;
-  if (!drawingText || !dateSent || !status || !firstEntry) return alert("กรุณากรอกข้อมูลให้ครบ");
+  if(!drawingText || !dateSent || !status || !firstEntry) return alert("กรุณากรอกข้อมูลให้ครบ");
 
   const drawings = drawingText.split(/\n+/).map(d=>d.trim()).filter(d=>d);
 
   for(const drawingNo of drawings){
     const formData = new FormData();
-    formData.append("action", "replaceByDate");
-    formData.append("DrawingNo", drawingNo);
-    formData.append("DateSent", dateSent);
-    formData.append("Status", status);
-    formData.append("FirstEntry", firstEntry);
-
-    await fetch(baseURL, { method:"POST", body: formData }).catch(err=>console.error(err));
+    formData.append("action","replaceByDate");
+    formData.append("DrawingNo",drawingNo);
+    formData.append("DateSent",dateSent);
+    formData.append("Status",status);
+    formData.append("FirstEntry",firstEntry);
+    await fetch(baseURL,{method:"POST",body:formData}).catch(err=>console.error(err));
   }
   alert("แทนที่ข้อมูลตามวันที่เรียบร้อยแล้ว");
-  form.reset();
-  infoBox.style.display = "none";
+  form.reset(); infoBox.style.display="none";
 });
 </script>
 </body>
