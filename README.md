@@ -52,7 +52,7 @@ button { margin-top:15px; width:100%; padding:10px; border:none; border-radius:5
 </form>
 
 <script>
-const baseURL = "https://script.google.com/macros/s/AKfycbwErS8iDOHBGpnVnbZGwtbE9rgk443-vBxTAV0zgKOmFxYCGtEIu_Hl5mtZwzSusakf/exec"; // ใส่ URL Web App ของคุณ
+const baseURL = "https://script.google.com/macros/s/AKfycbwprxqq9JqmujCoeh7KVf6C8eGyF9fpaF2N2kdfFiR8mMXkCaruiu7LDZHMJzGqMUA/exec"; // ใส่ URL Web App ของคุณ
 
 const form = document.getElementById("recordForm");
 const infoBox = document.getElementById("infoBox");
