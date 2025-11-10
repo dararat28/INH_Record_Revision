@@ -33,12 +33,8 @@ button { margin-top:15px; width:100%; padding:10px; border:none; border-radius:5
     <option value="แนบเอกสารซ้ำ">แนบเอกสารซ้ำ</option>
   </select>
 
-  <label>นำเข้าครั้งแรก?</label>
-  <select name="FirstEntry" id="FirstEntry" required>
-    <option value="">-- เลือก --</option>
-    <option value="yes">ใช่</option>
-    <option value="no">ไม่ใช่</option>
-  </select>
+  <label>ครั้งที่ (Times)</label>
+  <input type="number" name="Times" id="Times" min="1" placeholder="ใส่ตัวเลข เช่น 1, 2, 3..." required>
 
   <button type="button" id="checkBtn">ตรวจสอบข้อมูล</button>
   <button type="button" id="saveBtn">บันทึกข้อมูลใหม่</button>
@@ -51,7 +47,7 @@ button { margin-top:15px; width:100%; padding:10px; border:none; border-radius:5
 </form>
 
 <script>
-const baseURL = "https://script.google.com/macros/s/AKfycbycj7R_uT-G-pYbIum-d7iGdtD5dvjl9DnxZfRCYz5Y4WviCaZL4EaHjVLT3cA46Njj/exec";
+const baseURL = "https://script.google.com/macros/s/AKfycbw0AG-VXn3n7HFHf63dzGKD56l-KzyeWdX9v4H_4_N4h8WnxUsa04c3wiw_-TaWIMFS/exec";
 
 const form = document.getElementById("recordForm");
 const infoBox = document.getElementById("infoBox");
@@ -59,6 +55,7 @@ const resultList = document.getElementById("resultList");
 const checkBtn = document.getElementById("checkBtn");
 const saveBtn = document.getElementById("saveBtn");
 
+// 🟢 ตรวจสอบข้อมูล Drawing No
 checkBtn.addEventListener("click", async () => {
   const drawingText = document.getElementById("DrawingNo").value.trim();
   if(!drawingText) return alert("กรุณากรอก Drawing Number");
@@ -79,12 +76,14 @@ checkBtn.addEventListener("click", async () => {
   resultList.innerHTML = results.join("");
 });
 
+// 🟦 ปุ่มบันทึกข้อมูลใหม่
 saveBtn.addEventListener("click", async () => {
   const drawingText = document.getElementById("DrawingNo").value.trim();
   const dateSent = form.DateSent.value;
   const status = form.Status.value;
-  const firstEntry = form.FirstEntry.value;
-  if(!drawingText || !dateSent || !status || !firstEntry) return alert("กรุณากรอกข้อมูลให้ครบ");
+  const times = form.Times.value;
+
+  if(!drawingText || !dateSent || !status || !times) return alert("กรุณากรอกข้อมูลให้ครบ");
 
   const drawings = drawingText.split(/\n+/).map(d=>d.trim()).filter(d=>d);
 
@@ -94,20 +93,22 @@ saveBtn.addEventListener("click", async () => {
     formData.append("DrawingNo",drawingNo);
     formData.append("DateSent",dateSent);
     formData.append("Status",status);
-    formData.append("FirstEntry",firstEntry);
+    formData.append("Times",times);
     await fetch(baseURL,{method:"POST",body:formData}).catch(err=>console.error(err));
   }
-  alert("บันทึกข้อมูลใหม่เสร็จเรียบร้อย");
+
+  alert("✅ บันทึกข้อมูลใหม่เสร็จเรียบร้อยคุณนุ๊ก");
   form.reset(); infoBox.style.display="none";
 });
 
+// 🟥 ปุ่มแทนที่ข้อมูลเดิม
 form.addEventListener("submit", async e=>{
   e.preventDefault();
   const drawingText = document.getElementById("DrawingNo").value.trim();
   const dateSent = form.DateSent.value;
   const status = form.Status.value;
-  const firstEntry = form.FirstEntry.value;
-  if(!drawingText || !dateSent || !status || !firstEntry) return alert("กรุณากรอกข้อมูลให้ครบ");
+  const times = form.Times.value;
+  if(!drawingText || !dateSent || !status || !times) return alert("กรุณากรอกข้อมูลให้ครบ");
 
   const drawings = drawingText.split(/\n+/).map(d=>d.trim()).filter(d=>d);
 
@@ -117,10 +118,11 @@ form.addEventListener("submit", async e=>{
     formData.append("DrawingNo",drawingNo);
     formData.append("DateSent",dateSent);
     formData.append("Status",status);
-    formData.append("FirstEntry",firstEntry);
+    formData.append("Times",times);
     await fetch(baseURL,{method:"POST",body:formData}).catch(err=>console.error(err));
   }
-  alert("แทนที่ข้อมูลตามวันที่เรียบร้อยแล้ว");
+
+  alert("🔁 แทนที่ข้อมูลตามวันที่เรียบร้อยแล้ว");
   form.reset(); infoBox.style.display="none";
 });
 </script>
